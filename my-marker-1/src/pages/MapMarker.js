@@ -30,7 +30,7 @@ const MapMarker = () => {
       const marks = await AirportMarkService.getListAirport();
       setAirportMarks(marks);
     } catch (error) {
-      console.log("Error fetching airport marks:", error);
+      console.log("Error fetching airport marks: ", error);
     }
   };
 

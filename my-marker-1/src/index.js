@@ -8,6 +8,26 @@ import {
 import MapMarker from './pages/MapMarker';
 import Blog from './pages/Blog';
 import DashboardChart from './pages/DashboardChart';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  TimeScale,
+} from "chart.js";
+import 'chart.js/auto'
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  Title,
+  Tooltip,
+  Legend,
+  BarElement,
+  TimeScale,
+);
 
 
 const router = createBrowserRouter([

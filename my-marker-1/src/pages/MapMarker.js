@@ -2,11 +2,13 @@ import React, { useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import AirportMarkService from "../usecase/AirportMarkService";
 import uuid from "react-uuid";
+import Navbar from "../components/Navbar";
 
 const MapMarker = () => {
   const [airportMarks, setAirportMarks] = useState([]);
   const [airportLoc, setAirportLoc] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
 
   const fetchAirportLoc = async () => {
     try {
@@ -20,7 +22,7 @@ const MapMarker = () => {
   useEffect(() => {
     fetchAirportLoc();
   }, []);
-  
+
   const filteredTest = airportMarks?.data?.filter((item) =>
     selectedLocation ? item.loc === selectedLocation : true
   );
@@ -29,6 +31,7 @@ const MapMarker = () => {
     try {
       const marks = await AirportMarkService.getListAirport();
       setAirportMarks(marks);
+      setIsLoading(false); // Data fetching complete
     } catch (error) {
       console.log("Error fetching airport marks: ", error);
     }
@@ -44,6 +47,7 @@ const MapMarker = () => {
 
   return (
     <div>
+      <Navbar />
       <select value={selectedLocation} onChange={handleLocationChange}>
         <option value="">All Locations</option>
         {airportLoc?.map((item, index) => (
@@ -52,24 +56,28 @@ const MapMarker = () => {
           </option>
         ))}
       </select>
-      <MapContainer
-        preferCanvas={true}
-        center={[38.883, -9.03]}
-        zoom={6}
-        scrollWheelZoom={true}
-      >
-        <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        {filteredTest?.map((mark) => (
-          <Marker key={uuid()} position={[mark.lat, mark.long]}>
-            <Popup>
-              {mark.loc} <br /> Coordinates: {mark.lat}, {mark.long}
-            </Popup>
-          </Marker>
-        ))}
-      </MapContainer>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <MapContainer
+          preferCanvas={true}
+          center={[38.883, -9.03]}
+          zoom={6}
+          scrollWheelZoom={true}
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          {filteredTest?.map((mark) => (
+            <Marker key={uuid()} position={[mark.lat, mark.long]}>
+              <Popup>
+                {mark.loc} <br /> Coordinates: {mark.lat}, {mark.long}
+              </Popup>
+            </Marker>
+          ))}
+        </MapContainer>
+      )}
     </div>
   );
 };

@@ -14,11 +14,9 @@ MapJson.forEach(item => {
 });
 
 function Blog() {
-console.log('MAP', MapJson)
   return (
     <>  
         <Navbar />
-        <div>Blog</div>
     </>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Chart } from "react-chartjs-2";
 import ChartService from "../usecase/ChartService";
+import Navbar from "../components/Navbar";
 
 const DashboardChart = () => {
   const [carrierNoise, setCarrierNoise] = useState([]);
@@ -86,6 +87,7 @@ const DashboardChart = () => {
   };
   return (
     <div className="text-center">
+      <Navbar />
       <h1>DASHBOARD CHART</h1>
       <div>
         <h1>Carrier over Noise</h1>
